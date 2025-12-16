@@ -382,7 +382,8 @@
             const current = chapters[chapterIndex];
             
             // 모바일에서는 줄바꿈 없이 한 줄로, PC에서는 줄바꿈 적용
-           document.getElementById('sideTitle').innerHTML = current.en.replace("Taegeuk", "Taegeuk<br class='mobile-hidden'>");
+            document.getElementById('sideTitle').innerHTML = current.en.replace("Taegeuk", "Taegeuk<br class='mobile-hidden'>");
+            
             const videoElement = document.getElementById('mainVideoPlayer');
             const path = (type === 'Front') ? current.videos.front : current.videos.back;
             
@@ -453,4 +454,5 @@
     </script>
 </body>
 </html>
+
 
