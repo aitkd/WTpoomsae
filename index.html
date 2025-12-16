@@ -94,20 +94,72 @@
         .page-nav { margin-bottom: 40px; cursor: pointer; font-size: 1.1rem; font-weight: 600; color: var(--ios-blue); display: inline-block; }
         .section-header { font-size: 2.5rem; font-weight: 800; margin-bottom: 50px; text-align: center; color: #1c1c1e; }
         .grid-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+        
+        /* [카드 기본 스타일 - PC] */
         .card {
-            background: var(--ios-card); border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            padding: 40px 20px; text-align: center; cursor: pointer; transition: all 0.3s ease; overflow: hidden; border: 2px solid transparent;
+            background: var(--ios-card); 
+            border-radius: 20px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 40px 20px; 
+            text-align: center; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            overflow: hidden; 
+            border: 2px solid transparent;
+            min-height: 300px;       /* PC 높이 */
+            display: flex;
+            flex-direction: column;  /* 세로 정렬 */
+            justify-content: center; /* 수직 중앙 정렬 */
+            align-items: center;     /* 수평 중앙 정렬 */
+            --active-text: white; 
         }
+
+        /* [PC 전용 호버 효과] */
+        @media (hover: hover) {
+            .card:hover { 
+                background-color: var(--active-bg); 
+                transform: translateY(-5px); 
+                box-shadow: 0 12px 30px var(--active-shadow); 
+                border-color: transparent;
+            }
+            .card:hover h3, .card:hover p { 
+                color: var(--active-text); 
+            }
+        }
+
+        /* [색상 정의] */
+        .card:nth-child(1) { --active-bg: #f3cd0f; --active-shadow: rgba(255, 214, 10, 0.4); --active-text: #000000; }
+        .card:nth-child(2) { --active-bg: #34C759; --active-shadow: rgba(52, 199, 89, 0.4); }
+        .card:nth-child(3) { --active-bg: #007AFF; --active-shadow: rgba(0, 122, 255, 0.4); }
+        .card:nth-child(4) { --active-bg: #a833e2; --active-shadow: rgba(175, 82, 222, 0.4); }
+        .card:nth-child(5) { --active-bg: #a86307; --active-shadow: rgba(172, 142, 104, 0.4); }
+        .card:nth-child(6) { --active-bg: #ff990a; --active-shadow: rgba(255, 149, 0, 0.4); }
+        .card:nth-child(7) { --active-bg: #FF3B30; --active-shadow: rgba(255, 59, 48, 0.4); }
+        .card:nth-child(8) { --active-bg: #1C1C1E; --active-shadow: rgba(0, 0, 0, 0.4); }
+
         .card h3 { font-size: 1.6rem; margin: 0 0 8px 0; color: #000; transition: color 0.3s; }
         .card p { font-size: 1rem; color: var(--ios-text-secondary); margin: 0; transition: color 0.3s; }
-        .card:hover, .card.active { background-color: var(--ios-blue); transform: translateY(-5px); }
-        .card:hover h3, .card.active h3, .card:hover p, .card.active p { color: white; }
-        .action-area { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, margin-top 0.4s ease; margin-top: 0; }
-        .card.active .action-area { max-height: 100px; margin-top: 25px; }
-        .btn-group { display: flex; gap: 10px; }
-        .btn { flex: 1; padding: 12px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; background: white; color: #333; }
 
-        /* PAGE 3: 영상 재생 */
+        /* [공통 액티브 효과 (모바일/PC)] - 미디어 쿼리 밖으로 빼서 어디서든 작동하게 함 */
+        .card.active { 
+            background-color: var(--active-bg); 
+            transform: translateY(-5px); 
+            box-shadow: 0 12px 30px var(--active-shadow); 
+            border-color: transparent;
+        }
+        .card.active h3, .card.active p { 
+            color: var(--active-text); 
+        }
+        
+        /* [버튼 영역 공통 스타일] */
+        .action-area { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, margin-top 0.4s ease; margin-top: 0; width: 100%; }
+        .card.active .action-area { max-height: 100px; margin-top: 25px; }
+        .btn-group { display: flex; gap: 10px; width: 80%; margin: 0 auto;}
+        .btn { flex: 1; padding: 12px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; background: white; color: #333; }
+        .btn-front:hover { color: var(--ios-blue); }
+        .btn-back:hover { color: var(--ios-red); }
+
+        /* PAGE 3: 영상 재생 (PC) */
         #video-page { display: none; height: 100vh; background-color: black; overflow: hidden; width: 100%; }
         .video-layout { display: flex; height: 100%; width: 100%; }
         
@@ -151,7 +203,7 @@
             /* 2. 인트로 페이지 (화면 맞춤) */
             .main-logo-center { width: 100px; margin-bottom: 10px; }
             .main-title { 
-                font-size: 13vw; /* [중요] 화면 너비에 맞춰 글자 크기 자동 조절 */
+                font-size: 13vw; 
                 line-height: 1.2;
             }
             .cta-btn { 
@@ -165,15 +217,34 @@
             .page-nav { margin-bottom: 15px; }
             .section-header { font-size: 2rem; margin-bottom: 30px; }
             .grid-container { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-            .container { padding: 0 16px; } /* 좌우 여백을 줄여 콘텐츠 공간 확보 */
-            .card { padding: 25px 15px; } 
-            .card h3 { font-size: 1.3rem; } /* 카드 폰트 미세 조정 */
-            
-            /* 4. 비디오 페이지 (화면 맞춤 + 순서 변경) */
+            .container { padding: 0 16px; } 
+
+            /* [모바일 카드: Block 유지 + 내부 중앙 정렬] */
+           .card { 
+                display: block;    
+                height: auto;
+                min-height: 0;
+                text-align: center;
+                
+                /* [중요] 높이 조절은 이 숫자를 변경하세요 */
+                /* 예시: 25px (기본) -> 15px (더 납작하게) / 35px (더 길게) */
+                padding: 50px 15px; 
+            }
+
+            .card .btn-group {
+                display: flex;
+                width: 100%;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            .card h3 { font-size: 1.3rem; margin-bottom: 5px; }
+
+            /* 4. 비디오 페이지 (모바일 전용 레이아웃) - 미디어 쿼리 안으로 통합됨 */
             #video-page { height: auto; min-height: 100dvh; overflow-y: auto; background-color: var(--ios-bg); }
             .video-layout { flex-direction: column; }
             
-            .sidebar { display: contents; } /* 사이드바 틀 제거 후 재배치 */
+            .sidebar { display: contents; } 
             
             .back-link { 
                 order: 1; 
@@ -195,13 +266,13 @@
                 order: 3;
                 width: 100%;
                 height: auto; 
-                aspect-ratio: 16/9; /* 영상 비율 고정 */
+                aspect-ratio: 16/9;
                 background-color: #000;
             }
             .control-group { 
                 order: 4; 
                 padding: 20px; 
-                padding-bottom: 60px; /* 하단 여백 넉넉히 */
+                padding-bottom: 60px;
             }
         }
     </style>
