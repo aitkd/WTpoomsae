@@ -142,7 +142,62 @@
             width: 100%;
         }
         .container { max-width: var(--max-width); margin: 0 auto; padding: 0 40px; width: 100%; }
-        .page-nav { margin-bottom: 40px; cursor: pointer; font-size: 1.1rem; font-weight: 600; color: var(--ios-blue); display: inline-block; }
+        /* [추가] 버튼을 오른쪽 끝으로 보내기 위한 래퍼 */
+.nav-wrapper {
+    display: flex;
+    justify-content: flex-start; /* 오른쪽 정렬 */
+    margin-bottom: 40px;       /* 아래 컨텐츠와의 간격 */
+}
+
+/* [수정] 상단 네비게이션 버튼 (높이 축소 및 Flex 적용) */
+.page-nav {
+    display: inline-flex;      /* 내부 요소를 가로로 배치 */
+    align-items: center;       /* 수직 중앙 정렬 */
+    gap: 12px;                 /* Home 글자와 집 아이콘 사이 간격 */
+
+    /* 높이 딱 맞게 줄이기 (위아래 패딩 축소) */
+    padding: 6px 8px 6px 20px; /* 왼쪽은 글자 때문에 넓게, 오른쪽은 아이콘 때문에 좁게 */
+    
+    border: 2px solid var(--ios-blue);
+    border-radius: 50px;       /* 둥근 캡슐 모양 */
+    
+    font-size: 1.4rem;         /* 글자 크기 적당히 조절 */
+    font-weight: 700;
+    color: var(--ios-blue);
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* [수정] 집 아이콘 (이모지) 스타일 */
+.page-home {
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+    background-color: var(--ios-blue);
+    color: white;
+    
+    /* 아이콘 박스 크기 조절 */
+    padding: 8px 14px;
+    border-radius: 20px;       /* 안쪽도 둥글게 */
+    
+    font-size: 1.5rem;         /* 이모지 크기 */
+    line-height: 1;
+}
+
+/* 마우스 올렸을 때 효과 */
+@media (hover: hover) {
+    .page-nav:hover {
+        background-color: rgba(0, 122, 255, 0.05); /* 아주 연한 파란 배경 */
+        transform: translateY(-2px);
+    }
+}
+
+/* 터치했을 때 효과 */
+.page-nav:active {
+    transform: scale(0.96);
+    opacity: 0.8;
+}
         .section-header { font-size: 2.5rem; font-weight: 800; margin-bottom: 50px; text-align: center; color: #1c1c1e; }
         .grid-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
         
@@ -382,10 +437,12 @@
     </div>
     <div id="list-page">
         <div class="container">
-            <div class="page-nav" onclick="goBackToIntro()">← Back to Main</div>
-            <div class="section-header">Poomsae</div>
-            <div class="grid-container" id="poomsaeGrid">
-                </div>
+        <div class="nav-wrapper">
+        <div class="page-nav" onclick="goBackToIntro()"> Home
+            <div class="page-home">🏠</div>
+        </div>
+        </div>
+        <div class="grid-container" id="poomsaeGrid"></div>
         </div>
     </div>
 
