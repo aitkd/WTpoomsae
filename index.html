@@ -358,12 +358,10 @@
                 flex-direction: column; 
             }
             
-            /* 핵심 수정: 사이드바 컨테이너를 시각적으로 해제하여 자식 요소들을 개별 정렬 */
             .sidebar {
                 display: contents; 
             }
             
-            /* 순서 1: 뒤로가기 링크 (최상단) */
             .back-link { 
                 order: 1; 
                 width: 100%;
@@ -375,13 +373,12 @@
                 background-color: var(--ios-bg);
             }
 
-            /* 순서 2: 타이틀 영역 (비디오 위) */
             .sidebar-title-area { 
                 order: 2; 
                 width: 100%;
                 padding: 5px 20px 15px 20px; 
                 margin-bottom: 0;
-                text-align: left; /* 타이틀 좌측 정렬 (원하면 center) */
+                text-align: center;
                 background-color: var(--ios-bg);
             }
             .sidebar-main-title { font-size: 1.8rem; margin-bottom: 5px;}
@@ -584,4 +581,5 @@
         });
     </script>
 </body>
+
 </html>
