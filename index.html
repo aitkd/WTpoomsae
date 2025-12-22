@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>World Taekwondo Poomsae</title>
+    <style>
+        /* [Design System] */
+        :root {
+            --ios-bg: #F2F2F7;       
+            --ios-card: #FFFFFF;     
+            --ios-blue: #007AFF;     
+            --ios-red: #FF3B30;      
+            --ios-text-primary: #000000;
+            --ios-text-secondary: #8E8E93;
+            --max-width: 1440px;
+            --sidebar-width: 350px;
+            /* 상단 안전 영역 (노치 등 대응) */
+            --safe-top: env(safe-area-inset-top, 20px);
+        }
+
+        /* [기본 리셋 & 박스 모델] */
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "San Francisco", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--ios-bg);
+            color: var(--ios-text-primary);
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        /* 상단 헤더 */
+        .top-header {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            /* PC 기본 패딩 */
+            padding: calc(var(--safe-top) + 15px) 40px 15px 40px;
+            display: flex; align-items: center; justify-content: flex-start; gap: 20px;
+            z-index: 999;
+            background: rgba(247, 247, 250, 0.4) 30%;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .header-logo { height: 50px; object-fit: contain; }
+        .header-logo.small { height: 30px; }
+
+       #intro-page {
+            display: block;
+            position: relative; width: 100%; 
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            /* Flex 설정: 내용물 중앙 정렬을 위한 부모 컨테이너 */
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding-top: var(--safe-top);
+        }
+        .intro-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .intro-bg::before {
+            content: ""; position: absolute; top: -10px; left: -10px; right: -10px; bottom: -10px;
+            background: url('photo_21.png') no-repeat center/cover;
+            filter: blur(3px);
+        }
+        .intro-bg::after {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(0, 50, 200, 0.4) 25%,  rgba(239, 255, 9, 0.2) 40%, rgba(99, 185, 1, 0.2) 70%, rgba(200, 50, 50, 0.4) 80%);
+        }
+
+        /* [PC용 레이아웃 컨테이너] - 수정됨 */
+        .intro-container {
+            display: flex;
+            justify-content: center; /* 양끝 정렬(space-between) -> 중앙 정렬(center)로 변경 */
+            align-items: center;
+            width: 100%;
+            max-width: 1400px;
+            padding: 0 20px;
+            z-index: 10;
+            gap: 120px; /* 요소 사이의 간격 (원하는 만큼 조절하세요) */
+        }
+
+        /* [PC: 왼쪽 텍스트 영역] - 수정됨 */
+        .intro-text-area {
+            text-align: left;
+            flex: 0 0 auto; /* flex: 1 제거하여 좌측으로 쏠리지 않게 함 */
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* [PC: 오른쪽 이미지 영역] - 수정됨 */
+        .intro-image-area {
+            flex: 0 0 auto; /* flex: 1 제거하여 우측으로 쏠리지 않게 함 */
+            display: flex;
+            justify-content: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .main-title { 
+            font-size: 6rem; /* PC 폰트 사이즈 키움 */
+            font-weight: 800; 
+            margin: 0; 
+            color: white; 
+            text-shadow: 0 4px 12px rgba(0,0,0,0.3); 
+            line-height: 1.1; 
+        }
+        
+        .cta-btn {
+            margin-top: 50px; 
+            padding: 18px 60px; font-size: 1.3rem; font-weight: 700;
+            color: var(--ios-blue); background-color: white; border: 2px solid white; border-radius: 40px;
+            cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.2); transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+            z-index: 9999;            
+            touch-action: manipulation;
+        }
+        .cta-btn:hover { background-color: var(--ios-blue); color: white; border-color: var(--ios-blue); transform: scale(1.05); }
+
+        /* [PC: 오른쪽 이미지 영역] */
+        .intro-image-area {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end; /* 오른쪽 정렬 */
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* 2. 오른쪽에 커다란 이미지 배치 */
+        .intro-main-img {
+            width: 650px; /* PC용 큰 사이즈 */
+            max-width: 100%;
+            height: auto;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.4));
+            object-fit: contain;
+        }
+        /* PAGE 2: 리스트 */
+        #list-page {
+            display: none; min-height: 100vh; background-color: var(--ios-bg);
+            padding-top: 140px; padding-bottom: 100px;
+            width: 100%;
+        }
+        .container { max-width: var(--max-width); margin: 0 auto; padding: 0 40px; width: 100%; }
+        /* [추가] 버튼을 오른쪽 끝으로 보내기 위한 래퍼 */
+.nav-wrapper {
+    display: flex;
+    justify-content: flex-start; /* 오른쪽 정렬 */
+    margin-bottom: 40px;       /* 아래 컨텐츠와의 간격 */
+}
+
+/* [수정] 상단 네비게이션 버튼 (높이 축소 및 Flex 적용) */
+.page-nav {
+    display: inline-flex;      /* 내부 요소를 가로로 배치 */
+    align-items: center;       /* 수직 중앙 정렬 */
+    gap: 12px;                 /* Home 글자와 집 아이콘 사이 간격 */
+
+    /* 높이 딱 맞게 줄이기 (위아래 패딩 축소) */
+    padding: 6px 8px 6px 20px; /* 왼쪽은 글자 때문에 넓게, 오른쪽은 아이콘 때문에 좁게 */
+    
+    border: 2px solid var(--ios-blue);
+    border-radius: 50px;       /* 둥근 캡슐 모양 */
+    
+    font-size: 1.4rem;         /* 글자 크기 적당히 조절 */
+    font-weight: 700;
+    color: var(--ios-blue);
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* [수정] 집 아이콘 (이모지) 스타일 */
+.page-home {
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+    background-color: var(--ios-blue);
+    color: white;
+    
+    /* 아이콘 박스 크기 조절 */
+    padding: 8px 14px;
+    border-radius: 20px;       /* 안쪽도 둥글게 */
+    
+    font-size: 1.5rem;         /* 이모지 크기 */
+    line-height: 1;
+}
+
+/* 마우스 올렸을 때 효과 */
+@media (hover: hover) {
+    .page-nav:hover {
+        background-color: rgba(0, 122, 255, 0.05); /* 아주 연한 파란 배경 */
+        transform: translateY(-2px);
+    }
+}
+
+/* 터치했을 때 효과 */
+.page-nav:active {
+    transform: scale(0.96);
+    opacity: 0.8;
+}
+        .section-header { font-size: 2.5rem; font-weight: 800; margin-bottom: 50px; text-align: center; color: #1c1c1e; }
+        .grid-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+        
+        /* [카드 기본 스타일 - PC] */
+        .card {
+            background: var(--ios-card); 
+            border-radius: 20px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 40px 20px; 
+            text-align: center; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            overflow: hidden; 
+            border: 2px solid transparent;
+            min-height: 300px;       /* PC 높이 */
+            display: flex;
+            flex-direction: column;  /* 세로 정렬 */
+            justify-content: center; /* 수직 중앙 정렬 */
+            align-items: center;     /* 수평 중앙 정렬 */
+            --active-text: white; 
+            position: relative;       /* ★ 추가 */
+            z-index: 50;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* [PC 전용 호버 효과] */
+        @media (hover: hover) {
+            .card:hover { 
+                background-color: var(--active-bg); 
+                transform: translateY(-5px); 
+                box-shadow: 0 12px 30px var(--active-shadow); 
+                border-color: transparent;
+            }
+            .card:hover h3, .card:hover p { 
+                color: var(--active-text); 
+            }
+        }
+
+        /* [색상 정의] */
+        .card:nth-child(1) { --active-bg: #f3cd0f; --active-shadow: rgba(255, 214, 10, 0.4); --active-text: #000000; }
+        .card:nth-child(2) { --active-bg: #34C759; --active-shadow: rgba(52, 199, 89, 0.4); }
+        .card:nth-child(3) { --active-bg: #007AFF; --active-shadow: rgba(0, 122, 255, 0.4); }
+        .card:nth-child(4) { --active-bg: #a833e2; --active-shadow: rgba(175, 82, 222, 0.4); }
+        .card:nth-child(5) { --active-bg: #a86307; --active-shadow: rgba(172, 142, 104, 0.4); }
+        .card:nth-child(6) { --active-bg: #ff990a; --active-shadow: rgba(255, 149, 0, 0.4); }
+        .card:nth-child(7) { --active-bg: #FF3B30; --active-shadow: rgba(255, 59, 48, 0.4); }
+        .card:nth-child(8) { --active-bg: #1C1C1E; --active-shadow: rgba(0, 0, 0, 0.4); }
+
+        .card h3 { font-size: 1.6rem; margin: 0 0 8px 0; color: #000; transition: color 0.3s; }
+        .card p { font-size: 1rem; color: var(--ios-text-secondary); margin: 0; transition: color 0.3s; }
+
+        /* [공통 액티브 효과 (모바일/PC)] - 미디어 쿼리 밖으로 빼서 어디서든 작동하게 함 */
+        .card.active { 
+            background-color: var(--active-bg); 
+            transform: translateY(-5px); 
+            box-shadow: 0 12px 30px var(--active-shadow); 
+            border-color: transparent;
+        }
+        .card.active h3, .card.active p { 
+            color: var(--active-text); 
+        }
+        
+        /* [버튼 영역 공통 스타일] */
+        .action-area { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, margin-top 0.4s ease; margin-top: 0; width: 100%; }
+        .card.active .action-area { max-height: 100px; margin-top: 25px; }
+        .btn-group { display: flex; gap: 10px; width: 80%; margin: 0 auto;}
+        .btn { flex: 1; padding: 12px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; background: white; color: #333; }
+        .btn-front:hover { color: var(--ios-blue); }
+        .btn-back:hover { color: var(--ios-red); }
+
+        /* PAGE 3: 영상 재생 (PC) */
+        #video-page { display: none; height: 100vh; background-color: black; overflow: hidden; width: 100%; }
+        .video-layout { display: flex; height: 100%; width: 100%; }
+        
+        .sidebar { 
+            width: var(--sidebar-width); background-color: #F2F2F7; border-right: 1px solid #E5E5EA; 
+            display: flex; flex-direction: column; padding: 40px 30px; 
+            padding-top: calc(var(--safe-top) + 20px);
+        }
+        .back-link { font-size: 1rem; font-weight: 600; color: var(--ios-text-secondary); cursor: pointer; margin-bottom: 40px; display: block; }
+        .sidebar-title-area { margin-bottom: 40px; }
+        .sidebar-main-title { font-size: 2.5rem; font-weight: 800; color: #000; line-height: 1.2; margin-bottom: 10px;}
+        .sidebar-sub-title { font-size: 1.2rem; color: var(--ios-text-secondary); font-weight: 500; }
+        .control-group { display: flex; flex-direction: column; gap: 15px; }
+        .control-btn {
+            padding: 18px; border-radius: 16px; border: none; font-size: 1.1rem; font-weight: 700; cursor: pointer;
+            text-align: left; transition: all 0.2s; display: flex; justify-content: space-between; align-items: center;
+            position: relative;
+            z-index: 9999;            
+            touch-action: manipulation;
+        }
+        .btn-select { background-color: white; color: #333; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .btn-select.active { background-color: var(--ios-blue); color: white; pointer-events: none; }
+        .btn-select.back.active { background-color: var(--ios-red); }
+        
+        .video-content { flex: 1; background-color: #000; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .video-player { width: 100%; height: 100%; object-fit: contain; outline: none; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+
+       @media (max-width: 1024px) {
+            .top-header { padding: calc(var(--safe-top) + 10px) 0 10px 0; justify-content: center; }
+            .header-logo { height: 28px; }
+            .header-logo.small { height: 18px; }
+            .mobile-hidden { display: none; }
+
+            /* [인트로 모바일 복원] */
+            .intro-container {
+                flex-direction: column;
+                justify-content: center;
+                padding: 0 20px;
+                gap: 20px;
+            }
+
+            .intro-image-area {
+                order: 1;
+                justify-content: center;
+                margin-bottom: 20px;
+                width: 100%;
+            }
+            .intro-main-img { width: 180px; }
+
+            .intro-text-area {
+                order: 2;
+                text-align: center;
+                width: 100%;
+            }
+            .intro-text-area .main-logo-center { display: none; }
+
+            .main-title { font-size: 13vw; line-height: 1.2; }
+            .cta-btn { margin-top: 30px; padding: 14px 50px; font-size: 1.1rem; }
+
+            /* 리스트 페이지 */
+            #list-page { padding-top: calc(var(--safe-top) + 20px); }
+            .page-nav { margin-bottom: 15px; }
+            .section-header { font-size: 2rem; margin-bottom: 30px; }
+            .grid-container { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .container { padding: 0 16px; } 
+
+            .card { 
+                display: block;    
+                height: auto;
+                min-height: 0;
+                text-align: center;
+                padding: 50px 15px; 
+            }
+            .card .btn-group {
+                display: flex; width: 100%; justify-content: center; gap: 10px;
+            }
+            .card h3 { font-size: 1.3rem; margin-bottom: 5px; }
+
+            /* [4. 비디오 페이지 - 모바일 레이아웃 수정됨] */
+            #video-page { height: auto; min-height: 100dvh; overflow-y: auto; background-color: var(--ios-bg); }
+            
+            .video-layout { 
+                display: flex;
+                flex-direction: column; 
+            }
+            
+            /* 핵심 수정: 사이드바 컨테이너를 시각적으로 해제하여 자식 요소들을 개별 정렬 */
+            .sidebar {
+                display: contents; 
+            }
+            
+            /* 순서 1: 뒤로가기 링크 (최상단) */
+            .back-link { 
+                order: 1; 
+                width: 100%;
+                padding: calc(var(--safe-top) + 20px) 20px 10px 20px; 
+                margin-bottom: 0;
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: var(--ios-blue);
+                background-color: var(--ios-bg);
+            }
+
+            /* 순서 2: 타이틀 영역 (비디오 위) */
+            .sidebar-title-area { 
+                order: 2; 
+                width: 100%;
+                padding: 5px 20px 15px 20px; 
+                margin-bottom: 0;
+                text-align: left; /* 타이틀 좌측 정렬 (원하면 center) */
+                background-color: var(--ios-bg);
+            }
+            .sidebar-main-title { font-size: 1.8rem; margin-bottom: 5px;}
+
+            /* 순서 3: 비디오 컨텐츠 (중간) */
+            .video-content { 
+                order: 3;
+                width: 100%;
+                /* 비디오 높이 적절히 조절 (너무 크지 않게) */
+                height: auto; 
+                aspect-ratio: 16/9; 
+                background-color: #000;
+            }
+
+            /* 순서 4: 컨트롤 버튼 (하단) */
+            .control-group { 
+                order: 4; 
+                width: 100%;
+                padding: 20px; 
+                padding-bottom: 60px;
+                background-color: var(--ios-bg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-header" id="globalHeader">
+        <img src="logo_1.png" alt="로고1" class="header-logo">
+        <img src="logo_2.png" alt="로고2" class="header-logo">
+        <img src="logo_3.png" alt="로고3" class="header-logo small">
+    </header>
+
+    <div id="intro-page">
+        <div class="intro-bg"></div>
+        
+        <div class="intro-container">
+            
+            <div class="intro-text-area">
+                <h1 class="main-title">POOMSAE</h1>
+                <button class="cta-btn" onclick="goToListPage()">GO</button>
+            </div>
+
+            <div class="intro-image-area">
+                <img src="logo_1x3.png" alt="로고" class="intro-main-img" style="filter: drop-shadow(0 1px 1px rgba(240, 230, 230, 1));">
+            </div>
+
+        </div>
+    </div>
+    <div id="list-page">
+        <div class="container">
+        <div class="nav-wrapper">
+        <div class="page-nav" onclick="goBackToIntro()"> Home
+            <div class="page-home">🏠</div>
+        </div>
+        </div>
+        <div class="grid-container" id="poomsaeGrid"></div>
+        </div>
+    </div>
+
+    <div id="video-page">
+        <div class="video-layout">
+            <div class="sidebar">
+                <div class="back-link" onclick="goBackToList()">← Back to list</div>
+                
+                <div class="sidebar-title-area">
+                    <div class="sidebar-main-title" id="sideTitle"></div>
+                    <p id="playerType" style="color: gray; margin: 10px 0 0 0; font-size: 1.1rem;"></p>
+                </div>
+
+                <div class="control-group" id="controlGroup"></div>
+            </div>
+            <div class="video-content">
+                <video class="video-player" id="mainVideoPlayer" controls playsinline>
+                    <source src="" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chapters = [
+            { en: "Taegeuk 1 Jang", videos: { front: "T1-F.mp4", back: "T1-B.mp4" } },
+            { en: "Taegeuk 2 Jang", videos: { front: "T2-F.mp4", back: "T2-B.mp4" } },
+            { en: "Taegeuk 3 Jang", videos: { front: "T3-F.mp4", back: "T3-B.mp4" } },
+            { en: "Taegeuk 4 Jang", videos: { front: "T4-F.mp4", back: "T4-B.mp4" } },
+            { en: "Taegeuk 5 Jang", videos: { front: "T5-F.mp4", back: "T5-B.mp4" } },
+            { en: "Taegeuk 6 Jang", videos: { front: "T6-F.mp4", back: "T6-B.mp4" } },
+            { en: "Taegeuk 7 Jang", videos: { front: "T7-F.mp4", back: "T7-B.mp4" } },
+            { en: "Taegeuk 8 Jang", videos: { front: "T8-F.mp4", back: "T8-B.mp4" } },
+        ];
+
+        function toggleHeader(show) {
+            const header = document.getElementById('globalHeader');
+            header.style.display = show ? 'flex' : 'none';
+        }
+
+        function goToListPage() {
+            sessionStorage.setItem('metaTaekwonState', JSON.stringify({ page: 'list' }));
+            document.getElementById('intro-page').style.display = 'none';
+            document.getElementById('list-page').style.display = 'block';
+            document.getElementById('video-page').style.display = 'none';
+            toggleHeader(false); 
+            window.scrollTo(0, 0);
+        }
+
+        function goBackToIntro() {
+            sessionStorage.setItem('metaTaekwonState', JSON.stringify({ page: 'intro' }));
+            document.getElementById('list-page').style.display = 'none';
+            document.getElementById('intro-page').style.display = 'flex';
+            document.getElementById('video-page').style.display = 'none';
+            toggleHeader(true);
+        }
+
+        function goBackToList() {
+            goToListPage(); 
+            document.getElementById('mainVideoPlayer').pause();
+        }
+
+        function goToVideoPage(chapterIndex, type, e) {
+            if(e) e.stopPropagation();
+            sessionStorage.setItem('metaTaekwonState', JSON.stringify({ page: 'video', index: chapterIndex, type: type }));
+
+            document.getElementById('intro-page').style.display = 'none';
+            document.getElementById('list-page').style.display = 'none';
+            document.getElementById('video-page').style.display = 'block';
+            toggleHeader(false); 
+
+            const current = chapters[chapterIndex];
+            
+            // 모바일에서는 줄바꿈 없이 한 줄로, PC에서는 줄바꿈 적용
+            document.getElementById('sideTitle').innerHTML = current.en.replace("Taegeuk ", "Taegeuk <br class='mobile-hidden'>");
+
+            const videoElement = document.getElementById('mainVideoPlayer');
+            const path = (type === 'Front') ? current.videos.front : current.videos.back;
+            
+            if(path) {
+                if(!videoElement.src.includes(path)) {
+                    videoElement.src = path;
+                    videoElement.load();
+                }
+            } else {
+                alert("영상 준비중입니다.");
+            }
+
+            renderSidebarControls(chapterIndex, type);
+        }
+
+        function renderSidebarControls(index, currentType) {
+            const controlGroup = document.getElementById('controlGroup');
+            controlGroup.innerHTML = ''; 
+
+            const frontBtn = document.createElement('button');
+            frontBtn.className = `control-btn btn-select ${currentType === 'Front' ? 'active' : ''}`;
+            frontBtn.innerHTML = "Front";
+            frontBtn.onclick = () => goToVideoPage(index, 'Front');
+
+            const backBtn = document.createElement('button');
+            backBtn.className = `control-btn btn-select back ${currentType === 'Back' ? 'active' : ''}`;
+            backBtn.innerHTML = "Back";
+            backBtn.onclick = () => goToVideoPage(index, 'Back');
+
+            controlGroup.appendChild(frontBtn);
+            controlGroup.appendChild(backBtn);
+        }
+
+        const grid = document.getElementById('poomsaeGrid');
+        chapters.forEach((chapter, index) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <h3>${chapter.en}</h3>
+                <div class="action-area">
+                    <div class="btn-group">
+                        <button class="btn btn-front" onclick="goToVideoPage(${index}, 'Front', event)">Front</button>
+                        <button class="btn btn-back" onclick="goToVideoPage(${index}, 'Back', event)">Back</button>
+                    </div>
+                </div>
+            `;
+            card.onclick = function() {
+                document.querySelectorAll('.card.active').forEach(c => { if(c!==this) c.classList.remove('active'); });
+                this.classList.toggle('active');
+            };
+            grid.appendChild(card);
+        });
+
+        window.addEventListener('load', () => {
+            const state = JSON.parse(sessionStorage.getItem('metaTaekwonState'));
+            if (state) {
+                if (state.page === 'video') {
+                    goToVideoPage(state.index, state.type);
+                } else if (state.page === 'list') {
+                    goToListPage();
+                } else {
+                    goBackToIntro();
+                }
+            } else {
+                goBackToIntro();
+            }
+        });
+    </script>
+</body>
+</html>
